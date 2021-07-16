@@ -74,5 +74,5 @@ jobs:
       uses: actions/upload-artifact@v2
       with:
         name: "s3_backend_config-${CUSTOM}.tar"
-        path: "s3_backend_config-${CUSTOM}.tar
+        path: "s3_backend_config-${CUSTOM}.tar"
 
