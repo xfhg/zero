@@ -9,6 +9,7 @@ module "terraform_state_backend_baseline" {
    # version     = "x.x.x"
    namespace  = var.tfstate_namespace
    stage      = var.tfstate_stage
+   pet_name   = random_pet.name.id
    name       = var.tfstate_name + var.pet_name
    attributes = ["state"]
    

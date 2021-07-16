@@ -4,4 +4,3 @@
 provider "random" {}
 
 resource "random_pet" "name" {}
-pet_name = random_pet.name.id
