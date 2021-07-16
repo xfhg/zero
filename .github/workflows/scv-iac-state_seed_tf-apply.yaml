@@ -2,7 +2,7 @@
 
 name: SCV-IaC-State_SEED_TF-Apply
 env:
-  TEMPLATE: "${GITHUB_WORKSPACE}/scv-iac-state"
+  TEMPLATE: 'scv-iac-state'
   AWSENV: 'dev'
   AWS_REGION: 'ap-southeast-1'
   AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
@@ -37,25 +37,25 @@ jobs:
  
     - name: Terraform init
       run: |
-          cd "${TEMPLATE}" && \
+          cd "${GITHUB_WORKSPACE}/${TEMPLATE}" && \
           /usr/bin/terraform init
 
     # the -var override configures the tf_state_name to 'seed'
     - name: Terraform apply
       run: | 
-          cd "${TEMPLATE}" && \
+          cd "${GITHUB_WORKSPACE}/${TEMPLATE}" && \
           /usr/bin/terraform  \
             apply -auto-approve -var 'tf_state_name=""'
 
     - name: Terraform init -force-copy
       run: |
-          cd "${TEMPLATE}" && \
+          cd "${GITHUB_WORKSPACE}/${TEMPLATE}" && \
           /usr/bin/terraform  \
             init -force-copy 
 
     - name: Terraform output to file
       run: |
-          cd "${TEMPLATE}" && \
+          cd "${GITHUB_WORKSPACE}/${TEMPLATE}" && \
           /usr/bin/terraform  \
             output -json > tf_output.json
           tar -cvf ../s3_backend_seed_config.tar ./backend-*.tf ./tf_output.json
