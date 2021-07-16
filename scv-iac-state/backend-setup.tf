@@ -13,7 +13,6 @@ module "terraform_state_backend_baseline" {
    # version     = "x.x.x"
    namespace  = var.tfstate_namespace
    stage      = var.tfstate_stage
-   pet_name   = random_pet.name.id
    name       = local.s3_bucket_name
    attributes = ["state"]
    
