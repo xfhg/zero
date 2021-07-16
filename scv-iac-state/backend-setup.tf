@@ -3,6 +3,10 @@ provider "aws" {
     region = var.region
 }
 
+locals {
+  s3_bucket_name = concat(var.tfstate_name, random_pet.name.id)
+}
+
 module "terraform_state_backend_baseline" {
    source = "./modules/terraform-aws-tfstate-backend"
    # Cloud Posse recommends pinning every module to a specific version
@@ -10,7 +14,7 @@ module "terraform_state_backend_baseline" {
    namespace  = var.tfstate_namespace
    stage      = var.tfstate_stage
    pet_name   = random_pet.name.id
-   name       = var.tfstate_name + var.pet_name
+   name       = local.s3_bucket_name
    attributes = ["state"]
    
 
