@@ -20,3 +20,7 @@ variable "tfstate_name" {
   description = "tfstate module name"
 }
 
+variable "pet_name" {
+  type        = string
+}
+

@@ -48,7 +48,7 @@ jobs:
 
     - name: Terraform init -force-copy
       run: |
-          cd "${GITHUB_WORKSPACE}/templates" && \
+          cd "${GITHUB_WORKSPACE}/scv-iac-state" && \
           /usr/bin/terraform  \
             init force-copy 
 
