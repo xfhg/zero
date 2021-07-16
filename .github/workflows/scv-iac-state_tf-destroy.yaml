@@ -6,7 +6,7 @@ env:
   ######################### DEFAULTS - DO NOT EDIT #####################
   TEMPLATE: 'scv-iac-state'
   TFSTATE_BUCKET_NAME:  'scventures-development-scv-seed-state'
-  TFSTATE_DYNAMODB_TABLE: "${TFSTATE_BUCKET_NAME}-lock"
+  TFSTATE_DYNAMODB_TABLE: "scventures-development-scv-seed-state-lock"
   AWSENV: 'dev'
   AWS_REGION: 'ap-southeast-1'
   AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}

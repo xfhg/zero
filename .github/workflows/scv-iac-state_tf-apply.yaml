@@ -54,12 +54,6 @@ jobs:
           /usr/bin/terraform  \
             apply -auto-approve
 
-    - name: Terraform init -force-copy
-      run: |
-          cd "${GITHUB_WORKSPACE}/${TEMPLATE}" && \
-          /usr/bin/terraform  \
-            init -force-copy 
-
     - name: Terraform output to file
       run: |
           cd "${GITHUB_WORKSPACE}/${TEMPLATE}" && \
