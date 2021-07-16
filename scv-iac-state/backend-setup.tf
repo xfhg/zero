@@ -4,7 +4,8 @@ provider "aws" {
 }
 
 locals {
-  s3_bucket_name = concat(var.tfstate_name, random_pet.name.id)
+  pet_name = random_pet.name.id
+  s3_bucket_name = "${var.tfstate_name}-${local.pet_name}"
 }
 
 module "terraform_state_backend_baseline" {
