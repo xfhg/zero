@@ -45,8 +45,8 @@ jobs:
           cd "${GITHUB_WORKSPACE}/${TEMPLATE}" && \
           /usr/bin/terraform init \
             -backend=true \
-            -backend-config="dynamodb_table=${TFSTATE_DYNAMODB_TABLE}" \
-            -backend-config="bucket=${TFSTATE_BUCKET_NAME}"
+            -backend-config="dynamodb_table=scventures-development-scv-seed-state-lock" \
+            -backend-config="bucket=scventures-development-scv-seed-state"
 
     - name: Terraform apply
       run: | 
