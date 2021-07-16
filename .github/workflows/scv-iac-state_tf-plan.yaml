@@ -1,6 +1,6 @@
 # This is a basic workflow to help you get started with Actions
 
-name: TF-Plan
+name: SCV-IaC-State_TF-Plan
 env:
   TFSTATE_ID: 50694
   AWSENV: dev
@@ -41,17 +41,11 @@ jobs:
       
     - name: Terraform init
       run: |
-          cd "${GITHUB_WORKSPACE}/templates" && \
-          /usr/bin/terraform  init \
-            -backend=true \
-            -backend-config="dynamodb_table=tf-remote-state-lock" \
-            -backend-config="bucket=tc-remotestate-${TFSTATE_ID}"
-
-          #uses: actions/checkout@v2
+          cd "${GITHUB_WORKSPACE}/scv-iac-state" && \
+          /usr/bin/terraform  init 
 
     - name: Terraform plan
       run: |
-          cd "${GITHUB_WORKSPACE}/templates" && \
-          /usr/bin/terraform plan \
-            -var-file="../${AWSENV}/terraform.tfvars"
+          cd "${GITHUB_WORKSPACE}/scv-iac-state" && \
+          /usr/bin/terraform plan 
       

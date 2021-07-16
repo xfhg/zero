@@ -1,8 +1,8 @@
 # This is a basic workflow to help you get started with Actions
 
-name: TF-Apply
+name: SCV-IaC-State_TF-Apply
 env:
-  TFSTATE_ID: 50694
+  #TFSTATE_ID: 50694
   AWSENV: 'dev'
   AWS_REGION: 'ap-southeast-1'
   AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
@@ -37,18 +37,20 @@ jobs:
  
     - name: Terraform init
       run: |
-          cd "${GITHUB_WORKSPACE}/templates" && \
-          /usr/bin/terraform init \
-            -backend=true \
-            -backend-config="dynamodb_table=tf-remote-state-lock" \
-            -backend-config="bucket=tc-remotestate-${TFSTATE_ID}"
+          cd "${GITHUB_WORKSPACE}/scv-iac-state" && \
+          /usr/bin/terraform init
 
     - name: Terraform apply
       run: | 
+          cd "${GITHUB_WORKSPACE}/scv-iac-state" && \
+          /usr/bin/terraform  \
+            apply -auto-approve
+
+    - name: Terraform init -force-copy
+      run: |
           cd "${GITHUB_WORKSPACE}/templates" && \
           /usr/bin/terraform  \
-            apply -auto-approve \
-            -var-file="../${AWSENV}/terraform.tfvars"
+            init force-copy 
 
     - name: Terraform output to file
       run: |
@@ -61,11 +63,5 @@ jobs:
       with:
         name: tf_output.txt
         path: tf_output.txt
-
-    - uses: gliech/create-github-secret-action@v1
-      with:
-        name: FRONT_DOOR_PASSWORD
-        value: Eternia
-        pa_token: ${{ secrets.PA_TOKEN }}
 
             

@@ -1,5 +1,5 @@
 
-name: TF-Destroy
+name: SCV-IaC-State_TF-destroy
 env:
   TFSTATE_ID: 50694
   AWSENV: 'dev'
