@@ -2,7 +2,7 @@
 
 name: SCV-IaC-State_SEED_TF-Apply
 env:
-  TEMPLATE: 'scv-iac-state'
+  TEMPLATE: 'scv-iac-state-seed'
   AWSENV: 'dev'
   AWS_REGION: 'ap-southeast-1'
   AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
