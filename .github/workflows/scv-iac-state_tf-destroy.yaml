@@ -3,10 +3,6 @@
 name: SCV-IaC-State_TF-Destroy
 env:
 
-  # CUSTOM CONFIG START ################################################
-  CUSTOM: 'student-1'
-  # CUSTOM CONFIG END ##################################################
-
   ######################### DEFAULTS - DO NOT EDIT #####################
   TEMPLATE: 'scv-iac-state'
   TFSTATE_BUCKET_NAME:  'scventures-development-scv-seed-state'
