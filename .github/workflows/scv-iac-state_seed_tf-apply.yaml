@@ -45,7 +45,7 @@ jobs:
       run: | 
           cd "${GITHUB_WORKSPACE}/${TEMPLATE}" && \
           /usr/bin/terraform  \
-            apply -auto-approve -var 'tf_state_name=""'
+            apply -auto-approve -var 'tfstate_name=""'
 
     - name: Terraform init -force-copy
       run: |
