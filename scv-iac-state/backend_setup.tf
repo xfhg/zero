@@ -5,6 +5,7 @@ provider "aws" {
 
 locals {
   pet_name = random_pet.name.id
+  var.tfstate_name != "" ? var.tfstate_name : "scv-seed"
   s3_bucket_name = "${var.tfstate_name}-${local.pet_name}"
 }
 
