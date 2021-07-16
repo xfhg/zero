@@ -57,7 +57,7 @@ jobs:
           cd "${GITHUB_WORKSPACE}/scv-iac-state" && \
           /usr/bin/terraform  \
             output -json > tf_output.json
-          tar -cvf ../s3_backend_custom_config.tar ./backend-*.tf ./tf-output.json
+          tar -cvf ../s3_backend_custom_config.tar ./backend-*.tf ./tf_output.json
 
     - name: Upload s3_backend_custom_config.tar
       uses: actions/upload-artifact@v2
