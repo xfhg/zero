@@ -1,12 +1,20 @@
-# This is a basic workflow to help you get started with Actions
+# IaC TF-State S3 Backend creation
 
 name: SCV-IaC-State_TF-Apply
 env:
-  #TFSTATE_ID: 50694
+  # CUSTOM CONFIG START ################################################
+  CUSTOM: 'student-1'
+  # CUSTOM CONFIG END ##################################################
+
+  ######################### DEFAULTS - DO NOT EDIT #####################
+  TEMPLATE: 'scv-iac-state'
+  TFSTATE_BUCKET_NAME:  'scventures-development-scv-seed-state'
+  TFSTATE_DYNAMODB_TABLE: "${TFSTATE_BUCKET_NAME}-lock"
   AWSENV: 'dev'
   AWS_REGION: 'ap-southeast-1'
   AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
   AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+  ############################# END ####################################
 
 # Controls when the workflow will run
 on:
@@ -37,32 +45,34 @@ jobs:
  
     - name: Terraform init
       run: |
-          cd "${GITHUB_WORKSPACE}/scv-iac-state" && \
-          /usr/bin/terraform init
+          cd "${GITHUB_WORKSPACE}/${TEMPLATE}" && \
+          /usr/bin/terraform init \
+            -backend=true \
+            -backend-config="dynamodb_table=${TFSTATE_DYNAMODB_TABLE}" \
+            -backend-config="bucket=${TFSTATE_BUCKET_NAME}"
 
     - name: Terraform apply
       run: | 
-          cd "${GITHUB_WORKSPACE}/scv-iac-state" && \
+          cd "${GITHUB_WORKSPACE}/${TEMPLATE}" && \
           /usr/bin/terraform  \
             apply -auto-approve
 
     - name: Terraform init -force-copy
       run: |
-          cd "${GITHUB_WORKSPACE}/scv-iac-state" && \
+          cd "${GITHUB_WORKSPACE}/${TEMPLATE}" && \
           /usr/bin/terraform  \
             init -force-copy 
 
     - name: Terraform output to file
       run: |
-          cd "${GITHUB_WORKSPACE}/scv-iac-state" && \
+          cd "${GITHUB_WORKSPACE}/${TEMPLATE}" && \
           /usr/bin/terraform  \
             output -json > tf_output.json
-          tar -cvf ../s3_backend_custom_config.tar ./backend-*.tf ./tf_output.json
+          tar -cvf "../s3_backend_config-${CUSTOM}.tar" ./backend-*.tf ./tf_output.json
 
-    - name: Upload s3_backend_custom_config.tar
+    - name: "Upload s3_backend_${CUSTOM}_config.tar"
       uses: actions/upload-artifact@v2
       with:
-        name: s3_backend_custom_config.tar
-        path: s3_backend_custom_config.tar
+        name: "s3_backend_config-${CUSTOM}.tar"
+        path: "s3_backend_config-${CUSTOM}.tar
 
-            
