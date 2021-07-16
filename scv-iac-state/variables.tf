@@ -24,3 +24,8 @@ variable "pet_name" {
   type        = string
 }
 
+variable "s3_parent_bucket" {
+  type        = bool
+  description = "set this to true for the S3 TF-State backend jobs"
+  default     = false
+}

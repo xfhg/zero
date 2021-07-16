@@ -8,8 +8,7 @@ locals {
 }
 
 locals {
-  tfstate_name = (var.tfstate_name != "" ? var.tfstate_name : "scv-seed")
-  s3_bucket_name = "${var.tfstate_name}-${local.pet_name}"
+  s3_bucket_name = (var.s3_parent_bucket == true ? "scv-seed" : "${var.tfstate_name}-${local.pet_name}")
 }
 
 module "terraform_state_backend_baseline" {
