@@ -50,7 +50,7 @@ jobs:
       run: |
           cd "${GITHUB_WORKSPACE}/scv-iac-state" && \
           /usr/bin/terraform  \
-            init force-copy 
+            init -force-copy 
 
     - name: Terraform output to file
       run: |
