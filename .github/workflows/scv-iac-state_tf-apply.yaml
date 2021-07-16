@@ -54,14 +54,16 @@ jobs:
 
     - name: Terraform output to file
       run: |
-          cd "${GITHUB_WORKSPACE}/templates" && \
+          cd "${GITHUB_WORKSPACE}/scv-iac-state" && \
           /usr/bin/terraform  \
-            output -json > ${GITHUB_WORKSPACE}/tf_output.txt
+            output -json > tf_output.json
+          tar -cvf ../s3_backend_custom_config.tar.gz ./backend-*.tf
+          tar -uvf ../s3_backend_custom_config.tar.gz ./tf_output.json
 
-    - name: Upload tf_output.txt
+    - name: Upload s3_backend_custom_config.tar.gz
       uses: actions/upload-artifact@v2
       with:
-        name: tf_output.txt
-        path: tf_output.txt
+        name: s3_backend_custom_config.tar.gz
+        path: s3_backend_custom_config.tar.gz
 
             

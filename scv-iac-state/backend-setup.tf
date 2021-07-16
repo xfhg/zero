@@ -16,10 +16,9 @@ module "terraform_state_backend_baseline" {
    stage      = var.tfstate_stage
    name       = local.s3_bucket_name
    attributes = ["state"]
-   
 
    terraform_backend_config_file_path = "."
-   terraform_backend_config_file_name = "backend.tf"
+   terraform_backend_config_file_name = "backend-${local.pet_name}.tf"
    force_destroy                      = false
  }
 
