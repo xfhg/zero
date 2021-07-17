@@ -39,6 +39,11 @@ jobs:
 
     # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
     - uses: actions/checkout@v2
+
+    - name: Restore S3 TF state config
+      run: |
+          cd "${GITHUB_WORKSPACE}/${TEMPLATE}" && \
+          mv -v backend-scv-iac-state.tfignore backend-scv-iac-state.tf
  
     - name: Terraform init
       run: |
