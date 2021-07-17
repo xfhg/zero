@@ -2,11 +2,8 @@
 
 
 
-data "aws_vpc" "scv-development-zero" {
-  filter {
-      name = "isDefault"
-      values = ["false"]
-  }
+data "aws_vpc" "baseline" {
+
   tags = {
       Name = "${var.network_namespace}-${var.network_stage}-${var.network_name}"
   }

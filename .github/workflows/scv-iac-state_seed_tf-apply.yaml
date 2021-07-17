@@ -1,6 +1,6 @@
 # This is a basic workflow to help you get started with Actions
 
-name: SCV-IaC-State_SEED_TF-Apply
+name: SCV-IaC-State_Seed_TF-Apply
 env:
 
   ######################### DEFAULTS - DO NOT EDIT #####################
