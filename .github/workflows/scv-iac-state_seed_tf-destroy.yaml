@@ -54,7 +54,7 @@ jobs:
           cd "${GITHUB_WORKSPACE}/${TEMPLATE}" && \
           /usr/bin/terraform init \
             -backend=true \
-
+            -backend-config="dynamodb_table=${TFSTATE_DYNAMODB_TABLE}" \
             -backend-config="bucket=${TFSTATE_BUCKET_NAME}"
 
     - name: Terraform refresh
