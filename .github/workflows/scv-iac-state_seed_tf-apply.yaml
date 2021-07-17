@@ -50,7 +50,7 @@ jobs:
       run: | 
           cd "${GITHUB_WORKSPACE}/${TEMPLATE}" && \
           /usr/bin/terraform  \
-            apply -auto-approve -var 's3_parent_bucket=true'
+            apply -auto-approve 
 
     - name: Terraform init -force-copy
       run: |
