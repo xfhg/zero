@@ -40,6 +40,13 @@ jobs:
           cd "${GITHUB_WORKSPACE}/${TEMPLATES}" && \
           /usr/bin/terraform  init 
 
+    - name: Terraform refresh
+      run: |
+          cd "${GITHUB_WORKSPACE}/${TEMPLATE}" && \
+          ls -la && \
+          /usr/bin/terraform  \
+            refresh
+
     - name: Terraform plan
       run: |
           cd "${GITHUB_WORKSPACE}/${TEMPLATE}" && \
