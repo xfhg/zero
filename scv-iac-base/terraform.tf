@@ -3,11 +3,12 @@ terraform {
 
   backend "s3" {
     region         = "ap-southeast-1"
-    bucket         = "scventures-development-baseline-relaxed-troll-state"
-    key            = "terraform.tfstate"
-    dynamodb_table = "scventures-development-baseline-relaxed-troll-state-lock"
+    bucket         = "scventures-development-baseline-cgs-state"
+    key            = "baseline.tfstate"
+    dynamodb_table = "scventures-development-baseline-cgs-state-lock"
     profile        = ""
     role_arn       = ""
     encrypt        = "true"
+
   }
 }
