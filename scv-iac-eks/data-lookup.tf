@@ -2,7 +2,7 @@
 
 
 
-data "aws_vpc" "baseline" {
+data "aws_vpc" "scv-development-zero" {
   filter {
       name = "isDefault"
       values = ["false"]
