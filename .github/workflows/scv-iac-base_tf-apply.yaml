@@ -40,6 +40,12 @@ jobs:
           cd "${GITHUB_WORKSPACE}/${TEMPLATES}" && \
           /usr/bin/terraform  init 
 
+    - name: Terraform plan
+      run: |
+          cd "${GITHUB_WORKSPACE}/${TEMPLATE}" && \
+          /usr/bin/terraform  \
+            plan
+
     - name: Terraform apply
       run: |
           cd "${GITHUB_WORKSPACE}/${TEMPLATE}" && \
