@@ -4,6 +4,11 @@
 
 data "aws_vpc" "baseline" {
 
+  filter {
+       name = "isDefault"
+       values = ["false"]
+  }
+
   tags = {
       Name = "${var.network_namespace}-${var.network_stage}-${var.network_name}"
   }
