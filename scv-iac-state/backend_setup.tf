@@ -14,6 +14,6 @@ module "terraform_state_backend_baseline" {
 
    terraform_backend_config_file_path = "."
    terraform_backend_config_file_name = "backend-scv-iac-state.tf"
-   force_destroy                      = false
+   force_destroy                      = true
  }
 
