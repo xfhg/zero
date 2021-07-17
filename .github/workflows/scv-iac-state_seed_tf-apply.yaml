@@ -63,7 +63,7 @@ jobs:
           cd "${GITHUB_WORKSPACE}/${TEMPLATE}" && \
           /usr/bin/terraform  \
             output -json > tf_output.json
-          tar -cvf ../s3_backend_seed_config.tar ./scv-iac-state/backend-*.tf ./tf_output.json
+          tar -cvf ../s3_backend_seed_config.tar ./backend-*.tf ./tf_output.json
 
     - name: Upload s3_backend_seed_config.tar
       uses: actions/upload-artifact@v2

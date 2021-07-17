@@ -12,7 +12,7 @@ module "terraform_state_backend_baseline" {
    name       = var.tfstate_name
    attributes = ["state"]
 
-   terraform_backend_config_file_path = "scv-iac-state"
+   terraform_backend_config_file_path = "."
    terraform_backend_config_file_name = "backend-scv-iac-state.tf"
    force_destroy                      = false
  }
