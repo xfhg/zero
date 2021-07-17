@@ -40,7 +40,7 @@ jobs:
           cd "${GITHUB_WORKSPACE}/${TEMPLATE}" && \
           /usr/bin/terraform init 
 
-    - name: Terraform plan
+    - name: Terraform apply
       run: |
           cd "${GITHUB_WORKSPACE}/${TEMPLATE}" && \
           /usr/bin/terraform apply -auto-approve
@@ -50,7 +50,7 @@ jobs:
           cd "${GITHUB_WORKSPACE}/${TEMPLATE}" && \
           /usr/bin/terraform  \
             output -json > tf_output.json
-          tar -cvf ../s3_backend_seed_config.tar ./tf_output.json
+          tar -cvf ../eks_config.tar ./tf_output.json
 
     - name: Upload eks_config.tar
       uses: actions/upload-artifact@v2
