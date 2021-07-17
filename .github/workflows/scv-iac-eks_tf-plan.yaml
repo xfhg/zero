@@ -1,11 +1,6 @@
 # This is a basic workflow to help you get started with Actions
 
 name: SCV-IaC-EKS-TF-Plan
-inputs:
-  eks_cluster_name:  
-    description: 'Unique name for EKS cluster'
-    required: true
-    default: '01'
 env:
   TEMPLATE: 'scv-iac-eks'
   AWSENV: dev
