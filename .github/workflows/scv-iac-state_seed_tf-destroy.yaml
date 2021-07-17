@@ -31,6 +31,10 @@ jobs:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
 
+    # The TF state cannot be stored in the deleted S3 bucket anymore, 
+    # so we let the build contnue on even if tf destroy fails
+    continue-on-error: true
+
     # runs within your Docker container
     container:
       image: docker://cg5labs/my-alpine:latest    # checkout your code from your repository
@@ -50,7 +54,7 @@ jobs:
           cd "${GITHUB_WORKSPACE}/${TEMPLATE}" && \
           /usr/bin/terraform init \
             -backend=true \
-            -backend-config="dynamodb_table=${TFSTATE_DYNAMODB_TABLE}" \
+
             -backend-config="bucket=${TFSTATE_BUCKET_NAME}"
 
     - name: Terraform refresh
@@ -59,10 +63,7 @@ jobs:
           /usr/bin/terraform  \
             refresh
 
-    # The TF state cannot be stored in the deleted S3 bucket anymore, 
-    # so we let the build contnue on even if tf destroy fails
     - name: Terraform destroy
-      is_skippable: true
       run: |
           cd "${GITHUB_WORKSPACE}/${TEMPLATE}" && \
           /usr/bin/terraform  \
