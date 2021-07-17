@@ -59,12 +59,12 @@ jobs:
           /usr/bin/terraform  \
             refresh
 
-    # Force step success (exit=0) since the TF state cannot be stored in the 
-    # deleted S3 bucket anymore!
+    # The TF state cannot be stored in the deleted S3 bucket anymore, 
+    # so we let the build contnue on even if tf destroy fails
     - name: Terraform destroy
+      is_skippable: true
       run: |
           cd "${GITHUB_WORKSPACE}/${TEMPLATE}" && \
           /usr/bin/terraform  \
             destroy -auto-approve 
-          exit 0
 
