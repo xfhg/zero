@@ -19,6 +19,11 @@ data "aws_ami" "ubuntu" {
   owners = ["099720109477"] # Canonical
 }
 
+resource "aws_launch_template" "ubuntu" {
+  image_id      = data.aws_ami.ubuntu.id
+  instance_type = "t3.nano"
+}
+
 resource "aws_key_pair" "deployer" {
   key_name   = "deployer-key"
   public_key = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCKY1FMoHXvdkc5VgNj6sVfswURPwY5NgD5V0lhEFP1quvP90deszyryY9sb4acGPGpea/WyE4td3rRh9MQi6jrIO/Oi5KD5NF3VYYWGdAxAqoe4QNZPYEaAH4CQX6hMzye4eXiGxuoC+/wtlTDvFbHrCUtvvuEvQ1f+w+PKRr0rOC2EZUvdoA2/QV4UdGlbd1DkaWT8W819n6Jmj3VBGTaOUtqDyPJLvZKl4wDEkZhsREAb9kHnRDl1IfvQeWWVMSpQt4RvTJSQKcGy1DHu//c6E2UWZHiMyJ4oGvnZVK5QUh56hTFrvi9Qb+dA8T5Artc4oKEKthKaHgSxeOOw2Zp"
@@ -42,30 +47,30 @@ resource "aws_security_group" "bastion-sg" {
   }
 }
 
-resource "aws_instance" "bastion" {
-  for_each = data.aws_subnet_ids.public_subnet_ids.ids
-  vpc_security_group_ids = [aws_security_group.bastion-sg.id]
-  ami           = data.aws_ami.ubuntu.id
-  instance_type = "t2.micro"
-  key_name      = "deployer-key"
-  monitoring    = true
-  subnet_id     = each.value
+resource "aws_autoscaling_group" "eks-bastions" {
+  name_prefix = ["bastion"]
+  availability_zones = ["ap-southeast-1a","ap-southeast-1b","ap-southeast-1c"]
+  desired_capacity   = 1
+  max_size           = 1
+  min_size           = 1
 
-  tags = {
-    Name = random_pet.name.id
+  launch_template {
+    id      = aws_launch_template.ubuntu.id
+    version = "$Latest"
   }
 }
 
 #resource "aws_instance" "bastion" {
-  #ami           = data.aws_ami.ubuntu.id
-  #key_name      = "deployer-key"
-  #instance_type = "t2.micro"
-  #monitoring    = true
-  #subnet_id = 
-  #vpc_security_group_ids = [aws_security_group.bastion-sg.id]
+#  for_each = data.aws_subnet_ids.public_subnet_ids.ids
+#  vpc_security_group_ids = [aws_security_group.bastion-sg.id]
+#  ami           = data.aws_ami.ubuntu.id
+#  instance_type = "t2.micro"
+#  key_name      = "deployer-key"
+#  monitoring    = true
+#  subnet_id     = each.value
 #
-  #tags = {
-    #Name = random_pet.name.id
-  #}
-
+#  tags = {
+#    Name = each.random_pet.name.id
+#  }
 #}
+
