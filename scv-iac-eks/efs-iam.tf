@@ -8,7 +8,7 @@ resource "aws_iam_policy" "efs_csi_assume_role" {
     {
       "Effect": "Allow",
       "Principal": {
-        "Federated": "arn:aws:iam::${var.oidc}:oidc-provider/oidc.ap-southeast-1.amazonaws.com/id/${var.oidc}"
+        "Federated": "arn:aws:iam::${var.account_id}:oidc-provider/oidc.ap-southeast-1.amazonaws.com/id/${var.oidc}"
       },
       "Action": "sts:AssumeRoleWithWebIdentity",
       "Condition": {
