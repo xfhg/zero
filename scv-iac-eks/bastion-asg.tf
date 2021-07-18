@@ -45,7 +45,7 @@ resource "aws_security_group" "bastion-sg" {
 resource "aws_instance" "bastion" {
   for_each = data.aws_subnet_ids.public_subnet_ids.ids
   vpc_security_group_ids = [aws_security_group.bastion-sg.id]
-  ami = "${data.aws_ami.ami_amazon.id}"
+  ami           = data.aws_ami.ubuntu.id
   instance_type = "t2.micro"
   key_name      = "deployer-key"
   monitoring    = true
