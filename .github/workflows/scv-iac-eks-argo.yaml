@@ -48,4 +48,11 @@ jobs:
     - name: kubectl get nodes
       run: |
           kubectl get nodes
-           
+
+    - name: kubectl apply
+      run: |
+          cd /tmp
+          curl -L -O https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
+          kubectl create ns argocd
+          kubectl apply -n argocd -f /tmp/install.yaml
+
