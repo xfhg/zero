@@ -1,0 +1,122 @@
+data "aws_iam_policy_document" "efs_csi_assume_role" {
+  count = var.enabled == true ? 1 : 0
+
+  statement {
+    effect  = "Allow"
+    actions = ["sts:AssumeRoleWithWebIdentity"]
+
+    principals {
+      type = "Federated"
+      identifiers = [var.oidc]
+    }
+
+    condition {
+      test = "ForAnyValue:StringLike"
+      variable = "${split("oidc-provider/", var.oidc)[1]}:sub"
+      values   = ["system:serviceaccount:*:efs-csi-controller-sa"]
+    }
+  }
+}
+
+resource "aws_iam_policy" "efs-csi-access" {
+  count = var.enabled == true ? 1 : 0
+  name = "${var.cluster_name}-efs-access"
+
+  policy = <<POLICY
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Action": [
+        "elasticfilesystem:DescribeAccessPoints",
+        "elasticfilesystem:DescribeFileSystems",
+        "kms:GenerateDataKeyWithoutPlaintext",
+        "kms:Decrypt",
+        "kms:CreateGrant",
+        "kms:ReEncrypt*",
+        "kms:GenerateDataKey*",
+        "kms:Encrypt",
+        "kms:DescribeKey"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Effect": "Allow",
+      "Action": [
+        "elasticfilesystem:CreateAccessPoint"
+      ],
+      "Resource": "*",
+      "Condition": {
+        "StringLike": {
+          "aws:RequestTag/efs.csi.aws.com/cluster": "true"
+        }
+      }
+    },
+    {
+      "Effect": "Allow",
+      "Action": "elasticfilesystem:DeleteAccessPoint",
+      "Resource": "*",
+      "Condition": {
+        "StringEquals": {
+          "aws:ResourceTag/efs.csi.aws.com/cluster": "true"
+        }
+      }
+    }
+  ]
+}
+POLICY
+ }
+
+resource "aws_iam_role" "efscsiccess" {
+  count              = var.enabled == true ? 1 : 0
+
+  name               = "${var.cluster_name}-eks-efs-csi-access"
+  assume_role_policy = data.aws_iam_policy_document.efs_csi_assume_role.0.json
+}
+
+resource "aws_iam_role_policy_attachment" "efs_csi_policy_attach" {
+  count      = var.enabled == true ? 1 : 0
+
+  policy_arn = aws_iam_policy.efs-csi-access.0.arn
+  role       = aws_iam_role.efscsiccess.0.name
+}
+
+resource "aws_efs_file_system_policy" "eks-efs-policy" {
+  count = var.enabled == true ? length(var.subnet_ids) : 0
+  file_system_id = aws_efs_file_system.efs_file_system.0.id
+
+  policy = <<POLICY
+{
+    "Version": "2012-10-17",
+    "Id": "Policy01",
+    "Statement": [
+        {
+            "Sid": "Statement01",
+            "Effect": "Allow",
+            "Principal": {
+                "AWS": "*"
+            },
+            "Resource": "${aws_efs_file_system.efs_file_system.0.arn}",
+            "Action": [
+                "elasticfilesystem:ClientMount",
+                "elasticfilesystem:ClientWrite",
+                "elasticfilesystem:ClientRootAccess"
+            ],
+            "Condition": {
+                "Bool": {
+                    "aws:SecureTransport": "true"
+                }
+            }
+        }
+    ]
+}
+POLICY
+}
+
+resource "aws_efs_mount_target" "efs_mount_targets" {
+  count = var.enabled == true ? length(var.subnet_ids) : 0
+  file_system_id  = aws_efs_file_system.efs_file_system.0.id
+  subnet_id       = var.subnet_ids[count.index]
+  security_groups = [ aws_security_group.efs_sg.0.id ]
+}
