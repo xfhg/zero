@@ -1,5 +1,4 @@
 data "aws_iam_policy_document" "efs_csi_assume_role" {
-  count = var.enabled == true ? 1 : 0
 
   statement {
     effect  = "Allow"
@@ -19,7 +18,6 @@ data "aws_iam_policy_document" "efs_csi_assume_role" {
 }
 
 resource "aws_iam_policy" "efs-csi-access" {
-  count = var.enabled == true ? 1 : 0
   name = "${var.cluster_name}-efs-access"
 
   policy = <<POLICY
@@ -30,14 +28,7 @@ resource "aws_iam_policy" "efs-csi-access" {
       "Effect": "Allow",
       "Action": [
         "elasticfilesystem:DescribeAccessPoints",
-        "elasticfilesystem:DescribeFileSystems",
-        "kms:GenerateDataKeyWithoutPlaintext",
-        "kms:Decrypt",
-        "kms:CreateGrant",
-        "kms:ReEncrypt*",
-        "kms:GenerateDataKey*",
-        "kms:Encrypt",
-        "kms:DescribeKey"
+        "elasticfilesystem:DescribeFileSystems"
       ],
       "Resource": "*"
     },
@@ -69,21 +60,17 @@ POLICY
  }
 
 resource "aws_iam_role" "efscsiccess" {
-  count              = var.enabled == true ? 1 : 0
-
   name               = "${var.cluster_name}-eks-efs-csi-access"
   assume_role_policy = data.aws_iam_policy_document.efs_csi_assume_role.0.json
 }
 
 resource "aws_iam_role_policy_attachment" "efs_csi_policy_attach" {
-  count      = var.enabled == true ? 1 : 0
-
   policy_arn = aws_iam_policy.efs-csi-access.0.arn
   role       = aws_iam_role.efscsiccess.0.name
 }
 
 resource "aws_efs_file_system_policy" "eks-efs-policy" {
-  count = var.enabled == true ? length(var.subnet_ids) : 0
+
   file_system_id = aws_efs_file_system.efs_file_system.0.id
 
   policy = <<POLICY
