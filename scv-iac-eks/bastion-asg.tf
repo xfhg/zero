@@ -52,8 +52,7 @@ resource "aws_security_group" "bastion-sg" {
 }
 
 resource "aws_autoscaling_group" "eks-bastions" {
-  name_prefix = "bastion"
-  #availability_zones = ["ap-southeast-1a","ap-southeast-1b","ap-southeast-1c"]
+  name = "bastion"
   vpc_zone_identifier = data.aws_subnet_ids.public_subnet_ids.ids
   desired_capacity   = 1
   max_size           = 1
@@ -62,11 +61,6 @@ resource "aws_autoscaling_group" "eks-bastions" {
   launch_template {
     id      = aws_launch_template.ubuntu.id
     version = "$Latest"
-  }
-
-tags = {
-    "ams-monitoring-policy" = "ams-monitored"
-    "ams-monitoring-policy-platform" = "ams-monitored-linux"
   }
 
 }
