@@ -65,7 +65,7 @@ resource "aws_autoscaling_group" "eks-bastions" {
   }
 
   tags = {
-    "Name" = random_pet.name.id
+    "Name" = "Bastion"
   }
 
 }
