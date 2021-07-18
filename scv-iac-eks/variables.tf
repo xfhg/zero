@@ -1,3 +1,9 @@
+
+#variable "account_id" {
+  #type        = string
+  #description = "AWS Account ID"
+#}
+
 variable "region" {
   type        = string
   description = "AWS Region"
@@ -636,7 +642,6 @@ variable "warm_pool" {
 
 ## bastion
 
-
 # variable "user_data" {
 #   type        = list(string)
 #   default     = []
@@ -693,3 +698,5 @@ variable "warm_pool" {
 #   default     = true
 #   description = "Whether to associate public IP to the instance."
 # }
+
+# variable "oidc" {}

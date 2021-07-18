@@ -2,14 +2,13 @@ terraform {
   required_version = ">= 0.12.2"
 
   backend "s3" {
+    region         = "ap-southeast-1"
+    bucket         = "scventures-development-baseline-cgs-state"
     key            = "eks.tfstate"
-    
-    region         = "us-east-1"
-    bucket         = "scventures-development-baseline-state"
-    dynamodb_table = "scventures-development-baseline-state-lock"
+    dynamodb_table = "scventures-development-baseline-cgs-state-lock"
     profile        = ""
     role_arn       = ""
     encrypt        = "true"
+
   }
 }
-

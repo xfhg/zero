@@ -1,5 +1,5 @@
 
-region = "us-east-1"
+region = "ap-southeast-1"
 
 eks_namespace = "scv"
 eks_stage = "development"
