@@ -42,16 +42,30 @@ resource "aws_security_group" "bastion-sg" {
   }
 }
 
-
 resource "aws_instance" "bastion" {
-  ami           = data.aws_ami.ubuntu.id
-  key_name      = "deployer-key"
-  instance_type = "t2.micro"
-  monitoring    = true
+  for_each = data.aws_subnet_ids.public_subnet_ids.ids
   vpc_security_group_ids = [aws_security_group.bastion-sg.id]
+  ami = "${data.aws_ami.ami_amazon.id}"
+  instance_type = "t2.micro"
+  key_name      = "deployer-key"
+  monitoring    = true
+  subnet_id     = each.value
 
   tags = {
     Name = random_pet.name.id
   }
-
 }
+
+#resource "aws_instance" "bastion" {
+  #ami           = data.aws_ami.ubuntu.id
+  #key_name      = "deployer-key"
+  #instance_type = "t2.micro"
+  #monitoring    = true
+  #subnet_id = 
+  #vpc_security_group_ids = [aws_security_group.bastion-sg.id]
+#
+  #tags = {
+    #Name = random_pet.name.id
+  #}
+
+#}
