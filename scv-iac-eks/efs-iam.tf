@@ -65,8 +65,8 @@ resource "aws_iam_role" "efscsiccess" {
 }
 
 resource "aws_iam_role_policy_attachment" "efs_csi_policy_attach" {
-  policy_arn = aws_iam_policy.efs-csi-access.0.arn
-  role       = aws_iam_role.efscsiccess.0.name
+  policy_arn = aws_iam_policy.efs-csi-access.arn
+  role       = aws_iam_role.efscsiccess.name
 }
 
 
