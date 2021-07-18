@@ -37,7 +37,7 @@ jobs:
  
     - name: Get EKS cluster name
       run: |
-          EKS_CLUSTER=$(aws --output text eks list-clusters | awk '{ print $NF }')
+          EKS_CLUSTER=$(aws --output text eks list-clusters --region ${AWS_REGION} | awk '{ print $NF }')
 
     - name: EKS kubeconfig
       run: |
