@@ -64,8 +64,9 @@ resource "aws_autoscaling_group" "eks-bastions" {
     version = "$Latest"
   }
 
-  tags = {
-    "Name" = "Bastion"
+tags = {
+    "ams-monitoring-policy" = "ams-monitored"
+    "ams-monitoring-policy-platform" = "ams-monitored-linux"
   }
 
 }
