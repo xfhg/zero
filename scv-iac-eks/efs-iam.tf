@@ -61,7 +61,7 @@ POLICY
 
 resource "aws_iam_role" "efscsiccess" {
   name               = "${var.eks_name}-eks-efs-csi-access"
-  assume_role_policy = data.aws_iam_policy_document.efs_csi_assume_role.0.json
+  assume_role_policy = data.aws_iam_policy_document.efs_csi_assume_role.json
 }
 
 resource "aws_iam_role_policy_attachment" "efs_csi_policy_attach" {
