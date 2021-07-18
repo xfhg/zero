@@ -1,8 +1,8 @@
 
-variable "account_id" {
-  type        = string
-  description = "AWS Account ID"
-}
+#variable "account_id" {
+  #type        = string
+  #description = "AWS Account ID"
+#}
 
 variable "region" {
   type        = string
@@ -699,4 +699,4 @@ variable "warm_pool" {
 #   description = "Whether to associate public IP to the instance."
 # }
 
-variable "oidc" {}
+# variable "oidc" {}
