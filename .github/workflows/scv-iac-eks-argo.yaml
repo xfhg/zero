@@ -38,12 +38,12 @@ jobs:
     - name: Get EKS cluster name
       run: |
           EKS_CLUSTER=$(aws --output text eks list-clusters --region ${AWS_REGION} | awk '{ print $NF }')
-          echo "::set-env name=EKS_CLUSTER::$EKS_CLUSTER"
+          echo "EKS_CLUSTER=${EKS_CLUSTER}" >> $GITHUB_ENV
 
 
     - name: EKS kubeconfig
       run: |
-          aws eks update-kubeconfig --name ${EKS_CLUSTER}
+          aws eks update-kubeconfig --name "${{ env.EKS_CLUSTER }}"
 
     - name: kubectl get nodes
       run: |
