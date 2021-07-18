@@ -1,20 +1,25 @@
-data "aws_iam_policy_document" "efs_csi_assume_role" {
 
-  statement {
-    effect  = "Allow"
-    actions = ["sts:AssumeRoleWithWebIdentity"]
-
-    principals {
-      type = "Federated"
-      identifiers = [var.oidc]
+resource "aws_iam_policy" "efs_csi_assume_role" {
+  name = "${var.eks_name}-efs-csi_assume_role"
+  policy = <<POLICY
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Principal": {
+        "Federated": "arn:aws:iam::${var.oidc}:oidc-provider/oidc.ap-southeast-1.amazonaws.com/id/${var.oidc}"
+      },
+      "Action": "sts:AssumeRoleWithWebIdentity",
+      "Condition": {
+        "StringEquals": {
+          "oidc.eks.ap-southeast-1.amazonaws.com/id/${var.oidc}:sub": "system:serviceaccount:kube-system:efs-csi-controller-sa"
+        }
+      }
     }
-
-    condition {
-      test = "ForAnyValue:StringLike"
-      variable = "${split("oidc-provider/", var.oidc)[1]}:sub"
-      values   = ["system:serviceaccount:*:efs-csi-controller-sa"]
-    }
-  }
+  ]
+}
+POLICY
 }
 
 resource "aws_iam_policy" "efs-csi-access" {
