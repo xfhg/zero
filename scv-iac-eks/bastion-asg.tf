@@ -53,6 +53,7 @@ resource "aws_security_group" "bastion-sg" {
 resource "aws_autoscaling_group" "eks-bastions" {
   name_prefix = "bastion"
   availability_zones = ["ap-southeast-1a","ap-southeast-1b","ap-southeast-1c"]
+  vpc_zone_identifier = data.aws_subnet_ids.public_subnet_ids.ids
   desired_capacity   = 1
   max_size           = 1
   min_size           = 1
