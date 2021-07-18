@@ -22,6 +22,9 @@ data "aws_ami" "ubuntu" {
 resource "aws_launch_template" "ubuntu" {
   image_id      = data.aws_ami.ubuntu.id
   instance_type = "t3.nano"
+  key_name      = "deployer-key"
+  vpc_security_group_ids = [aws_security_group.bastion-sg.id]
+
 }
 
 resource "aws_key_pair" "deployer" {
