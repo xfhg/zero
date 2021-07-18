@@ -18,7 +18,7 @@ data "aws_iam_policy_document" "efs_csi_assume_role" {
 }
 
 resource "aws_iam_policy" "efs-csi-access" {
-  name = "${var.cluster_name}-efs-access"
+  name = "${var.eks_name}-efs-access"
 
   policy = <<POLICY
 {
@@ -60,7 +60,7 @@ POLICY
  }
 
 resource "aws_iam_role" "efscsiccess" {
-  name               = "${var.cluster_name}-eks-efs-csi-access"
+  name               = "${var.eks_name}-eks-efs-csi-access"
   assume_role_policy = data.aws_iam_policy_document.efs_csi_assume_role.0.json
 }
 
