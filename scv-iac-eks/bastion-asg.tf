@@ -42,12 +42,8 @@ resource "aws_security_group" "bastion-sg" {
   }
 }
 
-resource "aws_key_pair" "deployer" {
-  key_name   = "deployer-key"
-  public_key = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCKY1FMoHXvdkc5VgNj6sVfswURPwY5NgD5V0lhEFP1quvP90deszyryY9sb4acGPGpea/WyE4td3rRh9MQi6jrIO/Oi5KD5NF3VYYWGdAxAqoe4QNZPYEaAH4CQX6hMzye4eXiGxuoC+/wtlTDvFbHrCUtvvuEvQ1f+w+PKRr0rOC2EZUvdoA2/QV4UdGlbd1DkaWT8W819n6Jmj3VBGTaOUtqDyPJLvZKl4wDEkZhsREAb9kHnRDl1IfvQeWWVMSpQt4RvTJSQKcGy1DHu//c6E2UWZHiMyJ4oGvnZVK5QUh56hTFrvi9Qb+dA8T5Artc4oKEKthKaHgSxeOOw2Zp"
-}
 
-resource "aws_instance" "web" {
+resource "aws_instance" "bastion" {
   ami           = data.aws_ami.ubuntu.id
   key_name      = "deployer-key"
   instance_type = "t2.micro"
