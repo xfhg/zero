@@ -48,7 +48,7 @@ resource "aws_security_group" "bastion-sg" {
 }
 
 resource "aws_autoscaling_group" "eks-bastions" {
-  name_prefix = ["bastion"]
+  name_prefix = "bastion"
   availability_zones = ["ap-southeast-1a","ap-southeast-1b","ap-southeast-1c"]
   desired_capacity   = 1
   max_size           = 1
