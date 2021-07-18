@@ -69,35 +69,4 @@ resource "aws_iam_role_policy_attachment" "efs_csi_policy_attach" {
   role       = aws_iam_role.efscsiccess.0.name
 }
 
-resource "aws_efs_file_system_policy" "eks-efs-policy" {
-
-  file_system_id = aws_efs_file_system.efs_file_system.0.id
-
-  policy = <<POLICY
-{
-    "Version": "2012-10-17",
-    "Id": "Policy01",
-    "Statement": [
-        {
-            "Sid": "Statement01",
-            "Effect": "Allow",
-            "Principal": {
-                "AWS": "*"
-            },
-            "Resource": "${aws_efs_file_system.efs_file_system.0.arn}",
-            "Action": [
-                "elasticfilesystem:ClientMount",
-                "elasticfilesystem:ClientWrite",
-                "elasticfilesystem:ClientRootAccess"
-            ],
-            "Condition": {
-                "Bool": {
-                    "aws:SecureTransport": "true"
-                }
-            }
-        }
-    ]
-}
-POLICY
-}
 
