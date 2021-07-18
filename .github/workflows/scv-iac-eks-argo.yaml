@@ -43,7 +43,7 @@ jobs:
 
     - name: EKS kubeconfig
       run: |
-          aws eks update-kubeconfig --name "${{ env.EKS_CLUSTER }}"
+          aws eks update-kubeconfig --name "${{ env.EKS_CLUSTER }}" --region "${AWS_REGION}"
 
     - name: kubectl get nodes
       run: |
