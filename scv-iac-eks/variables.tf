@@ -642,12 +642,6 @@ variable "warm_pool" {
 
 ## bastion
 
-
-variable "availability_zones" {
-  type        = list(string)
-  description = "List of availability zones"
-}
-
 # variable "user_data" {
 #   type        = list(string)
 #   default     = []
