@@ -24,6 +24,7 @@ resource "aws_launch_template" "ubuntu" {
   instance_type = "t3.nano"
   key_name      = "deployer-key"
   vpc_security_group_ids = [aws_security_group.bastion-sg.id]
+  user_data = filebase64("${path.module}/bastion.sh.tpl")
 
 }
 
@@ -62,6 +63,11 @@ resource "aws_autoscaling_group" "eks-bastions" {
     id      = aws_launch_template.ubuntu.id
     version = "$Latest"
   }
+
+  tags = {
+    Name = random_pet.name.id
+  }
+
 }
 
 #resource "aws_instance" "bastion" {
