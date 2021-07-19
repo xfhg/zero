@@ -9,3 +9,7 @@ apply:
 
 destroy:
 	aws2-wrap --profile scv terraform destroy
+
+clean-init:
+	rm -rf .terraform/
+	aws2-wrap --profile scv terraform init

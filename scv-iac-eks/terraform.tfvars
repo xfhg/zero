@@ -3,7 +3,7 @@ region = "ap-southeast-1"
 
 eks_namespace = "scv"
 eks_stage = "development"
-eks_name = "zero"
+eks_name = "lab"
 
 network_namespace = "scv"
 network_stage = "development"
@@ -21,7 +21,7 @@ disk_size = 30
 kubernetes_labels = {}
 cluster_encryption_config_enabled = true
 
-instance_type = "t2.small"
+instance_type = "t3.medium"
 health_check_type = "EC2"
 wait_for_capacity_timeout = "10m"
 cpu_utilization_high_threshold_percent = 80
