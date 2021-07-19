@@ -8,7 +8,7 @@ ssm_name = "zero"
 parameter_write = [
   {
     name      = "/zero/environment/component/password"
-    value     = "X"
+    value     = "JUST-PLACEHOLDER-DONT-WRITE-SECRETS-IN-INFRACODE"
     type      = "SecureString"
     overwrite = "true"
   }
