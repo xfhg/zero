@@ -1,6 +1,8 @@
-# IaC TF-State S3 Backend deletion
 
-name: SCV-IaC-State_Seed_TF-Destroy
+# This workflow creates the S3 bucket and DynamoDB table for the
+# Terraform state files.
+
+name: SCV-IaC-State_TF-Apply
 env:
 
   ######################### DEFAULTS - DO NOT EDIT #####################
@@ -27,13 +29,9 @@ on:
 jobs:
   # This workflow contains a single job called "build"
 
-  tf-destroy:
+  tf-apply:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
-
-    # The TF state cannot be stored in the deleted S3 bucket anymore, 
-    # so we let the build contnue on even if tf destroy fails
-    continue-on-error: true
 
     # runs within your Docker container
     container:
@@ -41,31 +39,45 @@ jobs:
     
     steps:
 
+    - name: Configure AWS Credentials
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-session-token: ${{ secrets.AWS_SESSION_TOKEN }} # if you have/need it
+        aws-region: ${{ env.AWS_REGION }}
+
     # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
     - uses: actions/checkout@v2
-
-    - name: Restore S3 TF state config
-      run: |
-          cd "${GITHUB_WORKSPACE}/${TEMPLATE}" && \
-          mv -v backend-scv-iac-state.tfignore backend-scv-iac-state.tf
  
     - name: Terraform init
       run: |
           cd "${GITHUB_WORKSPACE}/${TEMPLATE}" && \
-          /usr/bin/terraform init \
-            -backend=true \
-            -backend-config="dynamodb_table=${TFSTATE_DYNAMODB_TABLE}" \
-            -backend-config="bucket=${TFSTATE_BUCKET_NAME}"
+          /usr/bin/terraform init
 
-    - name: Terraform refresh
+    - name: Terraform apply
       run: | 
           cd "${GITHUB_WORKSPACE}/${TEMPLATE}" && \
           /usr/bin/terraform  \
-            refresh
+            apply -auto-approve 
 
-    - name: Terraform destroy
+    - name: Terraform init -force-copy
       run: |
           cd "${GITHUB_WORKSPACE}/${TEMPLATE}" && \
           /usr/bin/terraform  \
-            destroy -auto-approve 
+            init -force-copy 
 
+    - name: Terraform output to file
+      run: |
+          cd "${GITHUB_WORKSPACE}/${TEMPLATE}" && \
+          /usr/bin/terraform  \
+            output -json > tf_output.json
+          tar -cvf ../s3_backend_config.tar ./backend-*.tf ./tf_output.json
+
+    - name: Upload s3_backend_config.tar
+      uses: actions/upload-artifact@v2
+      with:
+        name: s3_backend_config.tar
+        path: s3_backend_config.tar
+
+            
