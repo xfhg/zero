@@ -2,6 +2,9 @@
 
 cd /tmp || exit
 
+# patch AMI to latest 
+apt-get update && apt-get -y upgrade
+
 # install dependencies
 apt-get install unzip
 
@@ -26,3 +29,17 @@ curl https://get.helm.sh/helm-v3.6.3-linux-amd64.tar.gz -O
 tar -xzvf helm-v3.6.3-linux-amd64.tar.gz
 chmod 755 linux-amd64/helm
 mv -v linux-amd64/helm /usr/local/bin/
+
+# AWS SSO config
+mkdir -pv /home/ubuntu/.aws
+cat << EOF > /home/ubuntu/.aws/credentials
+sso_start_url = "https://scventures.awsapps.com/start
+sso_region = ap-southeast-1
+sso_account_id = 855703743734
+sso_role_name = OleaDeveloper
+EOF
+chmod 0700 /home/ubuntu/.aws
+chmod 0600 /home/ubuntu/.aws/credentials
+chown -R ubuntu. /home/ubuntu
+
+
