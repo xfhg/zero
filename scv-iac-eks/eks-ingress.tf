@@ -1,7 +1,7 @@
 
 locals {
    # Your AWS EKS Cluster ID goes here.
-  "k8s_cluster_name" = module.eks_cluster_new.eks_cluster_id
+  k8s_cluster_name = module.eks_cluster_new.eks_cluster_id
 }
 
 data "aws_region" "current" {}
@@ -26,7 +26,7 @@ module "alb_ingress_controller" {
   source  = "./modules/terraform-aws-eks-alb-ingress-controller"
 
   providers = {
-    kubernetes = "kubernetes.eks"
+    kubernetes = kubernetes.eks
   }
 
   k8s_cluster_type = "eks"
