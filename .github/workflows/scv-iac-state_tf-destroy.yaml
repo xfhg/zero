@@ -1,6 +1,6 @@
 # IaC TF-State S3 Backend deletion
 
-name: SCV-IaC-State_Seed_TF-Destroy
+name: SCV-IaC-State_TF-Destroy
 env:
 
   ######################### DEFAULTS - DO NOT EDIT #####################
@@ -16,9 +16,9 @@ env:
 # Controls when the workflow will run
 on:
   # Triggers the workflow on push or pull request events but only for the master branch
-  push:
-    branches:
-    - 'release'
+  # push:
+  #   branches:
+  #   - 'release'
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -40,6 +40,14 @@ jobs:
       image: docker://cg5labs/my-alpine:latest    # checkout your code from your repository
     
     steps:
+
+    - name: Configure AWS Credentials
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-session-token: ${{ secrets.AWS_SESSION_TOKEN }} # if you have/need it
+        aws-region: ${{ env.AWS_REGION }}
 
     # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
     - uses: actions/checkout@v2

@@ -1,12 +1,14 @@
-# This is a basic workflow to help you get started with Actions
 
-name: SCV-IaC-State_Seed_TF-Apply
+# This workflow creates the S3 bucket and DynamoDB table for the
+# Terraform state files.
+
+name: SCV-IaC-State_TF-Apply
 env:
 
   ######################### DEFAULTS - DO NOT EDIT #####################
   TEMPLATE: 'scv-iac-state'
-  TFSTATE_BUCKET_NAME:  'scventures-development-baseline-cgs-state'
-  TFSTATE_DYNAMODB_TABLE: 'scventures-development-baseline-cgs-state-lock'
+  # TFSTATE_BUCKET_NAME:  'scventures-development-baseline-cgs-state'
+  # TFSTATE_DYNAMODB_TABLE: 'scventures-development-baseline-cgs-state-lock'
   AWSENV: 'dev'
   AWS_REGION: 'ap-southeast-1'
   AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
@@ -16,9 +18,9 @@ env:
 # Controls when the workflow will run
 on:
   # Triggers the workflow on push or pull request events but only for the master branch
-  push:
-    branches:
-    - 'release'
+  # push:
+  #   branches:
+  #   - 'release'
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -37,6 +39,14 @@ jobs:
     
     steps:
 
+    - name: Configure AWS Credentials
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-session-token: ${{ secrets.AWS_SESSION_TOKEN }} # if you have/need it
+        aws-region: ${{ env.AWS_REGION }}
+
     # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
     - uses: actions/checkout@v2
  
@@ -45,7 +55,6 @@ jobs:
           cd "${GITHUB_WORKSPACE}/${TEMPLATE}" && \
           /usr/bin/terraform init
 
-    # the -var override configures the tf_state_name to 'seed'
     - name: Terraform apply
       run: | 
           cd "${GITHUB_WORKSPACE}/${TEMPLATE}" && \
@@ -63,12 +72,12 @@ jobs:
           cd "${GITHUB_WORKSPACE}/${TEMPLATE}" && \
           /usr/bin/terraform  \
             output -json > tf_output.json
-          tar -cvf ../s3_backend_seed_config.tar ./backend-*.tf ./tf_output.json
+          tar -cvf ../s3_backend_config.tar ./backend-*.tf ./tf_output.json
 
-    - name: Upload s3_backend_seed_config.tar
+    - name: Upload s3_backend_config.tar
       uses: actions/upload-artifact@v2
       with:
-        name: s3_backend_seed_config.tar
-        path: s3_backend_seed_config.tar
+        name: s3_backend_config.tar
+        path: s3_backend_config.tar
 
             

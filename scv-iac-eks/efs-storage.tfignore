@@ -1,6 +1,4 @@
 
-
-
 module "efs" {
   source = "./modules/terraform-aws-efs"
 

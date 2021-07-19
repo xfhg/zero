@@ -3,7 +3,6 @@ provider "aws" {
     region = var.region
 }
 
-
   module "eks_label" {
     source = "./modules/terraform-null-label"
     # Cloud Posse recommends pinning every module to a specific version
@@ -30,12 +29,7 @@ locals {
     eks_worker_ami_name_filter = "amazon-eks-node-${var.kubernetes_version}*"
   }
 
-
-
-
-
-
-  # Ensure ordering of resource creation to eliminate the race conditions when applying the Kubernetes Auth ConfigMap.
+# Ensure ordering of resource creation to eliminate the race conditions when applying the Kubernetes Auth ConfigMap.
 # Do not create Node Group before the EKS cluster is created and the `aws-auth` Kubernetes ConfigMap is applied.
 # Otherwise, EKS will create the ConfigMap first and add the managed node role ARNs to it,
 # and the kubernetes provider will throw an error that the ConfigMap already exists (because it can't update the map, only create it).
@@ -52,6 +46,9 @@ data "null_data_source" "wait_for_cluster_and_kubernetes_configmap" {
 module "eks_node_group" {
   source  = "./modules/terraform-aws-eks-node-group"
 
+  namespace  = var.eks_namespace
+  stage      = var.eks_stage
+  name       = var.eks_name
 
   subnet_ids        = data.aws_subnet_ids.public_subnet_ids.ids
   cluster_name      = data.null_data_source.wait_for_cluster_and_kubernetes_configmap.outputs["cluster_name"]
@@ -62,25 +59,21 @@ module "eks_node_group" {
   kubernetes_labels = var.kubernetes_labels
   disk_size         = var.disk_size
 
-
-  namespace  = var.eks_namespace
-  stage      = var.eks_stage
-  name       = var.eks_name
-
 }
 
 
-  module "eks_cluster_new" {
-   source = "./modules/terraform-aws-eks-cluster"
-
-  region                       = var.region
-  vpc_id     = data.aws_vpc.baseline.id
-  subnet_ids                   = concat(tolist(data.aws_subnet_ids.public_subnet_ids.ids), tolist(data.aws_subnet_ids.private_subnet_ids.ids))
+module "eks_cluster_new" {
+  source = "./modules/terraform-aws-eks-cluster"
 
   namespace  = var.eks_namespace
   stage      = var.eks_stage
   name       = var.eks_name
- 
+
+  region     = var.region
+  vpc_id     = data.aws_vpc.baseline.id
+  #subnet_ids = concat(tolist(data.aws_subnet_ids.public_subnet_ids.ids), tolist(data.aws_subnet_ids.private_subnet_ids.ids))
+  subnet_ids = tolist(data.aws_subnet_ids.private_subnet_ids.ids)
+
   kubernetes_version           = var.kubernetes_version
   local_exec_interpreter       = var.local_exec_interpreter
   oidc_provider_enabled        = var.oidc_provider_enabled
@@ -94,13 +87,7 @@ module "eks_node_group" {
   cluster_encryption_config_kms_key_policy                  = var.cluster_encryption_config_kms_key_policy
   cluster_encryption_config_resources                       = var.cluster_encryption_config_resources
 
-
 }
-
-
-
-
-
 
 # module "eks_workers" {
 #     source = "./modules/terraform-aws-eks-workers"
