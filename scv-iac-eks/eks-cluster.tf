@@ -71,7 +71,8 @@ module "eks_cluster_new" {
 
   region     = var.region
   vpc_id     = data.aws_vpc.baseline.id
-  subnet_ids = concat(tolist(data.aws_subnet_ids.public_subnet_ids.ids), tolist(data.aws_subnet_ids.private_subnet_ids.ids))
+  #subnet_ids = concat(tolist(data.aws_subnet_ids.public_subnet_ids.ids), tolist(data.aws_subnet_ids.private_subnet_ids.ids))
+  subnet_ids = tolist(data.aws_subnet_ids.private_subnet_ids.ids)
 
   kubernetes_version           = var.kubernetes_version
   local_exec_interpreter       = var.local_exec_interpreter

@@ -13,11 +13,11 @@ kubernetes_version = "1.20"
 oidc_provider_enabled = true
 enabled_cluster_log_types = ["audit"]
 cluster_log_retention_period = 7
-instance_types = ["t3.small"]
+instance_types = ["t3.medium"]
 desired_size = 2
 max_size = 3
 min_size = 2
-disk_size = 20
+disk_size = 30
 kubernetes_labels = {}
 cluster_encryption_config_enabled = true
 

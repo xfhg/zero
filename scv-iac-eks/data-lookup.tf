@@ -1,7 +1,5 @@
 
 
-
-
 data "aws_vpc" "baseline" {
 
   filter {
