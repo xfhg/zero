@@ -9,7 +9,7 @@ network_namespace = "scv"
 network_stage = "development"
 network_name = "zero"
 
-kubernetes_version = "1.19"
+kubernetes_version = "1.20.4"
 oidc_provider_enabled = true
 enabled_cluster_log_types = ["audit"]
 cluster_log_retention_period = 7
