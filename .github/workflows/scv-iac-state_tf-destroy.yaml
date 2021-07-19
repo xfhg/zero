@@ -1,6 +1,6 @@
 # IaC TF-State S3 Backend deletion
 
-name: SCV-IaC-State_Seed_TF-Destroy
+name: SCV-IaC-State_TF-Destroy
 env:
 
   ######################### DEFAULTS - DO NOT EDIT #####################
