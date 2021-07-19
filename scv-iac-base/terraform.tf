@@ -3,9 +3,9 @@ terraform {
 
   backend "s3" {
     region         = "ap-southeast-1"
-    bucket         = "scventures-development-baseline-cgs-state"
+    bucket         = "scventures-development-baseline-olea-state"
     key            = "baseline.tfstate"
-    dynamodb_table = "scventures-development-baseline-cgs-state-lock"
+    dynamodb_table = "scventures-development-baseline-olea-state-lock"
     profile        = ""
     role_arn       = ""
     encrypt        = "true"
