@@ -26,7 +26,27 @@ If these credentials expire while a GH Action Terraform job is running, then the
 * AWS_ACCESS_KEY_ID
 * AWS_SECRET_ACCESS_KEY
 
-## Create the Terraform State S3 Backend
-* Run the job: 
-* Download the artifact with the custom S3 backend config:
+## ArgoCD
+Deployments to the EKS cluster are managed in GitOps workflows with ArgoCD. The ArgoCD Web-UI is not exposed for security reasons. To access it, please use k8s port-forwarding from the SSH bastion to your local system.
+
+All deployment configuration for Argo can be done as-code. The GitOps workflow needs a mature branching strategy for the application repositories. At a minimum, this means:
+
+`Work with a non-master branch by default and only use pull-requests to merge to master.`
+
+For a better setup, create feature/bugfix branches for each code enhancement and use a non-master branch (e.g. 'develop') for integration and testing.
+
+The ArgoCD workflows are event-based. They can be scheduled so that they run automatically on commits to different branches. This means:
+
+`Use non-master branches to test and deploy to non-shared namespaces. 
+Use ONLY the master branch to deploy to a shared clean-room namespace.`
+
+## EKS namespaces
+K8s namespaces are a powerful way to separate environments. In the described ArgoCD setup above, the K8s namespaces could follow this pattern:
+1. Namespaces for individual developers and/or application components.
+2. A shared namespace for a stable dev environment, integration and testing purposes. 
+
+
+
+
+
 
