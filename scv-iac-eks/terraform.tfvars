@@ -3,7 +3,7 @@ region = "ap-southeast-1"
 
 eks_namespace = "scv"
 eks_stage = "development"
-eks_name = "lab"
+eks_name = "zero"
 
 network_namespace = "scv"
 network_stage = "development"
