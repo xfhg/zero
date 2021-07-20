@@ -5,7 +5,13 @@ We'll use the following terms throughout the workshop:
 
 * Terraform: Hashicorp Terraform uses Cloud provider APIs to create resources. For that it has its own configuration language (HCL) and stores its configuration state in a so-called 'statefile'. The statefile is very important as it contains the current configuration that Terraform applied to the Cloud account. Because of its importance, the Terraform statefile is stored remotely in a versioned object storage (AWS S3 bucket).
 
-* IaC - Infrastructure-As-Code: Cloud infrastructure lifecycle (create,modify,delete) is fully managed with the Terraform code in this repository.
+* IaC - Infrastructure-As-Code: Cloud infrastructure lifecycle (create,modify,delete) is fully managed with the Terraform code in this repository.A
+
+List of other terms: 
+Kubernetes: Deployment, ConfigMap, Secret, Ingress, Controller, reconciliation-loop, control-plane, YAML, ReplicaSet, namespace
+Git: branching strategy, master, GitOps, workflow, Github Actions,
+AWS: S3 bucket, RDS database, EKS (Elastic Kubernetes Service), bastion, jumphost, 
+Terraform: TF state, 
 
 ## Structure of the 'zero' repository
 The 'zero' repository contains all Infrastructure-as-code and CD setup.
@@ -37,8 +43,8 @@ For a better setup, create feature/bugfix branches for each code enhancement and
 
 The ArgoCD workflows are event-based. They can be scheduled so that they run automatically on commits to different branches. This means:
 
-`Use non-master branches to test and deploy to non-shared namespaces. 
-Use ONLY the master branch to deploy to a shared clean-room namespace.`
+`Use non-master branches to test and deploy to non-shared namespaces. `
+`Use ONLY the master branch to deploy to a shared clean-room namespace.`
 
 ## EKS namespaces
 K8s namespaces are a powerful way to separate environments. In the described ArgoCD setup above, the K8s namespaces could follow this pattern:
