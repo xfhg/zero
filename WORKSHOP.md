@@ -24,6 +24,10 @@ The folders inside it create different parts of the IaC. Each folder has corresp
 3. Create the Bastion:
 4. Create the non-EKS infrastructure (RDS, EFS, ...): 
 
+
+## GitHub Actions
+The Github action workflows use a Docker image with the infrastructure tools installed. This Docker image contains the complete toolstack for automation: Terraform, kubectl, aws-cli, eksctl, ...
+
 ## SSO Session management with GitHub Action secrets
 These credentials have to be refreshed before every GH Action run as they are short-lived. They expire within one hour.
 If these credentials expire while a GH Action Terraform job is running, then the job will run forever and needs to be manually cancelled. When this happens, the Terraform state needs to be cleared manually in the DynamoDB table as well.
