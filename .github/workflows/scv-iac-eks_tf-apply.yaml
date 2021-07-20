@@ -1,4 +1,6 @@
-# This is a basic workflow to help you get started with Actions
+
+# This workflow creates the EKS cluster. It depends on the base workflow
+# to create the VPC and subnets. It will FAIL if the base workflow did not run.
 
 name: SCV-IaC-EKS-TF-Apply
 env:

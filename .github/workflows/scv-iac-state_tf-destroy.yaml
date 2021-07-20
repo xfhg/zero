@@ -1,4 +1,10 @@
-# IaC TF-State S3 Backend deletion
+
+# IaC TF-State S3 Backend deletion. This deletes all TF-State files,
+# S3 bucket and DynamoDB table without promting for input. 
+
+################################# WARNING ####################################
+# USE WITH CAUTION!
+################################# WARNING ####################################
 
 name: SCV-IaC-State_TF-Destroy
 env:

@@ -1,4 +1,9 @@
-# This is a basic workflow to help you get started with Actions
+
+# This workflow destroys the EKS cluster without promting for input. 
+
+################################# WARNING ####################################
+# USE WITH CAUTION!
+################################# WARNING ####################################
 
 name: SCV-IaC-EKS-TF-Destroy
 env:
@@ -50,7 +55,7 @@ jobs:
           cd "${GITHUB_WORKSPACE}/${TEMPLATE}" && \
           /usr/bin/terraform init 
 
-    - name: Terraform plan
+    - name: Terraform destroy
       run: |
           cd "${GITHUB_WORKSPACE}/${TEMPLATE}" && \
           /usr/bin/terraform destroy -auto-approve
