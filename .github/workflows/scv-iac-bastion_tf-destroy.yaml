@@ -1,15 +1,14 @@
 
-# This workflow destroys the VPC network setup for the EKS cluster 
-# without promting for input. 
+# This workflow destroys the SSH Bastion without promting for input. 
 
 ################################# WARNING ####################################
 # USE WITH CAUTION!
 ################################# WARNING ####################################
 
-name: SCV-IaC-Base_TF-Destroy
+name: SCV-IaC-Bastion_TF-Destroy
 env:
   ######################### DEFAULTS - DO NOT EDIT #####################
-  TEMPLATE: 'scv-iac-base'
+  TEMPLATE: 'scv-iac-bastion'
   AWSENV: dev
   AWS_REGION: 'ap-southeast-1'
   AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
