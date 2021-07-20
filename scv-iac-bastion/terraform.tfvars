@@ -5,6 +5,21 @@ bastion_namespace = "scv"
 bastion_stage = "development"
 bastion_name = "bastion"
 
+key_namespace = "scv"
+key_stage = "development"
+key_name = "bastion-key"
+
+ssh_public_key_path = "publickeys"
+ssh_public_key_file = "scv.pub"
+generate_ssh_key = false
+
+## auto generated
+# ssh_public_key_name = "generated.pub"
+# ssh_private_key_name = "generated"
+# ssh_key_algorithm = "ECDSA"
+# ssm_path_prefix = "auto_ssh_keys"
+##
+
 sg_namespace = "scv"
 sg_stage = "development"
 sg_name = "bastion-security"

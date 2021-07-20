@@ -7,6 +7,8 @@ module "autoscale_group" {
   stage      = var.bastion_stage
   name       = var.bastion_name
 
+  key_name = module.aws_key_pair_import.key_name
+
   image_id                      = data.aws_ami.ubuntu.id
   instance_type                 = var.instance_type
   instance_market_options       = var.instance_market_options
@@ -17,7 +19,7 @@ module "autoscale_group" {
   max_size                      = var.max_size
   wait_for_capacity_timeout     = var.wait_for_capacity_timeout
   associate_public_ip_address   = true
-  user_data_base64              = base64encode(local.userdata)
+  user_data_base64              = base64encode(data.template_file.bastion_init.rendered)
   metadata_http_tokens_required = true
 
   security_group_ids            = [module.bastion-sg.id]
@@ -51,18 +53,6 @@ module "autoscale_group" {
 
 }
 
-# https://www.terraform.io/docs/configuration/expressions.html#string-literals
-locals {
-  userdata = <<-USERDATA
-    #!/bin/bash
-    cat <<"__EOF__" > /home/ec2-user/.ssh/config
-    Host *
-        StrictHostKeyChecking no
-    __EOF__
-    chmod 600 /home/ec2-user/.ssh/config
-    chown ec2-user:ec2-user /home/ec2-user/.ssh/config
-  USERDATA
-}
 
 
 module "bastion-sg" {
@@ -70,7 +60,7 @@ module "bastion-sg" {
 
   vpc_id = data.aws_vpc.baseline.id
 
-namespace  = var.sg_namespace
+  namespace  = var.sg_namespace
   name       = var.sg_name
   stage      = var.sg_stage
   

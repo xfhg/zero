@@ -35,6 +35,36 @@ variable "sg_name" {
   description = "sg module name"
 }
 
+variable "key_namespace" {
+  type        = string
+  description = "key module namespace"
+}
+
+variable "key_stage" {
+  type        = string
+  description = "key module stage"
+}
+
+variable "key_name" {
+  type        = string
+  description = "key module name"
+}
+
+
+variable "ssh_public_key_path" {
+  type        = string
+  description = "Path to SSH public key directory (e.g. `/secrets`)"
+}
+
+variable "ssh_public_key_file" {
+  type        = string
+  description = "Name of existing SSH public key file (e.g. `id_rsa.pub`)"
+}
+
+variable "generate_ssh_key" {
+  type        = bool
+  description = "If set to `true`, new SSH key pair will be created"
+}
 
 
 variable "network_namespace" {
