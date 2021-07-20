@@ -79,7 +79,8 @@ module "bastion-sg" {
       from_port   = 0
       to_port     = 65535
       protocol    = "all"
-      cidr_blocks = [data.aws_vpc.baseline.cidr_block]
+      #cidr_blocks = [data.aws_vpc.baseline.cidr_block]
+      cidr_blocks = ["0.0.0.0/0"]
       self        = null
       description = "Allow egress to VPC"
     }

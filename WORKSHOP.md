@@ -48,6 +48,7 @@ For a better setup, create feature/bugfix branches for each code enhancement and
 The ArgoCD workflows are event-based. They can be scheduled so that they run automatically on commits to different branches. This means:
 
 `Use non-master branches to test and deploy to non-shared namespaces. `
+
 `Use ONLY the master branch to deploy to a shared clean-room namespace.`
 
 ## EKS namespaces
