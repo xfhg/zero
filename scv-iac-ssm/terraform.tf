@@ -3,12 +3,12 @@ terraform {
 
   backend "s3" {
     region         = "ap-southeast-1"
-    bucket         = "scventures-development-baseline-olea-state"
+    bucket         = "scventures-development-lab-state"
     key            = "ssm.tfstate"
-    dynamodb_table = "scventures-development-baseline-olea-state-lock"
+    dynamodb_table = "scventures-development-lab-state-lock"
     profile        = ""
     role_arn       = ""
     encrypt        = "true"
-
   }
 }
+

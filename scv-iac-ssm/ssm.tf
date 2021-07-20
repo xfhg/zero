@@ -5,7 +5,7 @@ module "kms_key" {
   description             = "SSM KMS key"
   deletion_window_in_days = 10
   enable_key_rotation     = true
-  alias                   = "alias/parameter_store_kmskey"
+  alias                   = join("",["alias/",var.ssm_name])
 
   namespace  = var.ssm_namespace
   name       = var.ssm_name
