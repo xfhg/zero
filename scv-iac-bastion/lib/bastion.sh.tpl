@@ -33,13 +33,24 @@ mv -v linux-amd64/helm /usr/local/bin/
 # AWS SSO config
 mkdir -pv /home/ubuntu/.aws
 cat << EOF > /home/ubuntu/.aws/credentials
+[default]
 sso_start_url = "https://scventures.awsapps.com/start
 sso_region = ap-southeast-1
 sso_account_id = 855703743734
 sso_role_name = OleaDeveloper
 EOF
+
 chmod 0700 /home/ubuntu/.aws
 chmod 0600 /home/ubuntu/.aws/credentials
 chown -R ubuntu. /home/ubuntu
+
+# AWS account access info
+cat << EOF > /etc/motd
+To access the AWS infrastructure in the VPC, authenticate with:
+# aws sso login
+
+To access the EKS lab cluster, generate kubeconfig
+# aws eks update-kubeconfig --name scv-development-lab-cluster
+EOF
 
 aws s3 ls --profile OleaDeveloper
