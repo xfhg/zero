@@ -27,7 +27,6 @@ locals {
     # otherwise the first version of Kubernetes supported by AWS (v1.11) for EKS workers will be used, but
     # EKS control plane will use the version specified by kubernetes_version variable.
     eks_worker_ami_name_filter = "amazon-eks-node-${var.kubernetes_version}*"
-
   }
 
 # Ensure ordering of resource creation to eliminate the race conditions when applying the Kubernetes Auth ConfigMap.
