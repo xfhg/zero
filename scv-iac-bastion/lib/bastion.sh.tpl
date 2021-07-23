@@ -25,10 +25,15 @@ chmod 755 kubectl
 mv -v kubectl /usr/local/bin
 
 # install helm
-curl https://get.helm.sh/helm-v3.6.3-linux-amd64.tar.gz -O
+curl -LO https://get.helm.sh/helm-v3.6.3-linux-amd64.tar.gz
 tar -xzvf helm-v3.6.3-linux-amd64.tar.gz
 chmod 755 linux-amd64/helm
 mv -v linux-amd64/helm /usr/local/bin/
+
+# install argo
+curl -LO https://github.com/argoproj/argo-cd/releases/download/v2.0.4/argocd-linux-amd64
+chmod 755 argocd-linux-amd64 
+mv -v argocd-linux-amd64 /usr/local/bin/argocd
 
 # AWS SSO config
 mkdir -pv /home/ubuntu/.aws
@@ -46,11 +51,17 @@ chown -R ubuntu. /home/ubuntu
 
 # AWS account access info
 cat << EOF > /etc/motd
+
+##############################################################################
+
 To access the AWS infrastructure in the VPC, authenticate with:
 # aws sso login
 
 To access the EKS lab cluster, generate kubeconfig
 # aws eks update-kubeconfig --name scv-development-lab-cluster
+
+##############################################################################
+
 EOF
 
 aws s3 ls --profile OleaDeveloper
