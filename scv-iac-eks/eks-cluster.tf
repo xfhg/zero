@@ -28,13 +28,6 @@ locals {
     # EKS control plane will use the version specified by kubernetes_version variable.
     eks_worker_ami_name_filter = "amazon-eks-node-${var.kubernetes_version}*"
 
-    # required tags to make ALB ingress work https://docs.aws.amazon.com/eks/latest/userguide/alb-ingress.html
-    public_subnets_additional_tags = {
-      "kubernetes.io/role/elb" : 1
-    }
-    private_subnets_additional_tags = {
-      "kubernetes.io/role/internal-elb" : 1
-    }
   }
 
 # Ensure ordering of resource creation to eliminate the race conditions when applying the Kubernetes Auth ConfigMap.
